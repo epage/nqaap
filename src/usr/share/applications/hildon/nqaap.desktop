@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0.0	
+Encoding=UTF-8
+Name=nQaap
+Exec=python /opt/Nqa-Audiobook-player/nqaap.py
+Icon=nqaap
+X-Icon-path=/usr/share/icons
+X-Window-Icon=nqaap
+Type=Application
+X-Osso-Type=application/x-executable
