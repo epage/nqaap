@@ -160,14 +160,14 @@ class Player(object):
 
     def seek_percent(self, ratio):
         try:
-            target = self.player.duration() * ratio # Calculate where to seek
-            self.player.seek_time(int(target))      # seek
+            target = int(self.player.duration() * ratio) # Calculate where to seek
+            self.player.seek_time(target)      # seek
 
             position = self.player.elapsed()
             self.storage.set_time(self.audiobook.current_chapter, target) # save position
             return True
         except:
-            _moduleLogger.excetion("Seek failed")
+            _moduleLogger.exception("Seek failed")
             return False
 
     def _find_books(self):
