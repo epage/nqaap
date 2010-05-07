@@ -526,7 +526,7 @@ class Gui(object):
 
     def set_button_text(self, title, text):
         if hildonize.IS_FREMANTLE_SUPPORTED:
-            self.button.set_text("Resume", "Resume playing the audiobook")
+            self.button.set_text(title, text)
         else:
             self.button.set_label("%s - %s" % (title, text))
 
