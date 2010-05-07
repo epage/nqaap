@@ -26,6 +26,7 @@ class Gui(object):
 
     def __init__(self):
         _moduleLogger.info("Starting GUI")
+        self._clipboard = gtk.clipboard_get()
         self._callMonitor = CallMonitor.CallMonitor()
         self.__settingsWindow = None
         self.__settingsManager = None
