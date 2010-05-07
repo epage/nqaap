@@ -13,9 +13,10 @@ class SimplePlayer(object):
 
     def __init__(self, on_playing_done = None):
         #Fields
-        self.has_file = False
         self.playing = False
+        self.__filename = ""
         self.__elapsed = 0
+        self.__duration = 0
 
         #Event callbacks
         self.on_playing_done = on_playing_done
@@ -31,6 +32,10 @@ class SimplePlayer(object):
         #Constants
         self.time_format = gst.Format(gst.FORMAT_TIME)
         self.seek_flag = gst.SEEK_FLAG_FLUSH
+
+    @property
+    def has_file(self):
+        return 0 < len(self.__filename)
 
     @gtk_toolbox.log_exception(_moduleLogger)
     def on_message(self, bus, message):
@@ -50,13 +55,15 @@ class SimplePlayer(object):
     def set_file(self, file):
         _moduleLogger.info("set file: %s", file)
         if os.path.isfile(file):
+            if self.__filename != file:
+                self._invalidate_cache()
             if self.playing:
                 self.stop()
 
             file = os.path.abspath(file) # ensure absolute path
             _moduleLogger.debug("set file (absolute path): %s "%file)
             self.player.set_property("uri", "file://" + file)
-            self.has_file = True
+            self.__filename = file
         else:
             _moduleLogger.error("File: %s not found" % file)
 
@@ -79,14 +86,19 @@ class SimplePlayer(object):
 
     def duration(self):
         try:
-            return self.player.query_duration(self.time_format, None)[0]
+            self.__duration = self.player.query_duration(self.time_format, None)[0]
         except:
             _moduleLogger.exception("Query failed")
-            return 0
+            pass
+        return self.__duration
 
     def seek_time(self, ns):
         _moduleLogger.debug("Seeking to: %s", ns)
         self.player.seek_simple(self.time_format, self.seek_flag, ns)
+
+    def _invalidate_cache(self):
+        self.__elapsed = 0
+        self.__duration = 0
 
     def __seek_percent(self, percent):
         format = gst.Format(gst.FORMAT_PERCENT)
