@@ -26,12 +26,12 @@ class Player(object):
         self.audiobook = None
         self._bookDir = None
         self._bookPaths = {}
-        self.load_books_path(constants._default_book_path_)
 
     def get_books_path(self):
         return self._bookDir
 
     def load_books_path(self, booksPath):
+        _moduleLogger.info("Loading books %s" % booksPath)
         if self.audiobook is not None:
             position = self.player.elapsed()
             self.storage.set_time(self.audiobook.current_chapter, position)
