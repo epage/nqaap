@@ -18,7 +18,7 @@ class Player(object):
         self.storage = FileStorage.FileStorage(path = constants._data_path_)
         if hildonize.IS_HILDON_SUPPORTED and not hildonize.IS_FREMANTLE_SUPPORTED:
             import SimpleOSSOPlayer as _SimplePlayer
-            SimpleGStreamer = _SimplePlayer # silence PyFlakes
+            SimplePlayer = _SimplePlayer # silence PyFlakes
         else:
             import SimpleGStreamer as SimplePlayer
         self.player = SimplePlayer.SimplePlayer(self.next_chapter)
