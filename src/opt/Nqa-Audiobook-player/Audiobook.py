@@ -27,12 +27,12 @@ class Audiobook(object):
             raise IOError("Audiobook directory not found")
 
         if len(self._chapterPaths) <= self.current_chapter:
-			_moduleLogger.warning(
-				"Audiobook chapter out of range (%s/%s)" % (
-					self.current_chapter, len(self._chapterPaths)
-				)
-			)
-			self.current_chapter = 0
+            _moduleLogger.warning(
+                "Audiobook chapter out of range (%s/%s)" % (
+                    self.current_chapter, len(self._chapterPaths)
+                )
+            )
+            self.current_chapter = 0
 
     @property
     def chapters(self):
