@@ -69,24 +69,18 @@ rm -f ~/.nqaap/nqaap.log
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre install script
     #  p.preremove="""#!/bin/sh
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre remove script
-    version = "0.8.0"           #Version of your software, e.g. "1.2.0" or "0.8.2"
-    build = "3" #Build number, e.g. "1" for the first build of this
+    version = "0.8.1"           #Version of your software, e.g. "1.2.0" or "0.8.2"
+    build = "0" #Build number, e.g. "1" for the first build of this
                                 #version of your software. Increment
                                 #for later re-builds of the same
                                 #version of your software.  Text with
                                 #changelog information to be displayed
                                 #in the package "Details" tab of the
                                 #Maemo Application Manager
-    changeloginformation = "Merged changes from EPage (proper changelog later)\nNew Icon by Strutten."
-    # 0.7.2 : Seek bar now responds to clicks (rather than drags)\nFixed bug with wrong text showing on button after changed chapter.
-    # 0.7.1 : Fixed crash when current points to non existing book
-    # 0.7.0 : Now ignores pressed outside the chapter selection menu\nAdded help
-    # 0.6.1 : Fixed bug that prevented running on devices without Audiobook folder.
-    #         Added tip on where to place audiobooks.
-    # 0.6.0 : Now also plays .mp3 files
-    # 0.5.0 : Second release. Now shows which chapter is playing, and scrolls to it when changing.
-    # 0.4.9 : First release. Now it should work
-    #  
+    changeloginformation = """Bugfix for Post 104: Chapter out of range error
+Bugfix for Post 110: Exception on launch of nqa for Maemo 4.1
+Updated icons to have transparency
+"""
     dir_name = "src" #Name of the subfolder containing your package
                                 #source files
                                 #(e.g. usr\share\icons\hicolor\scalable\myappicon.svg,
@@ -97,11 +91,10 @@ rm -f ~/.nqaap/nqaap.log
     #Thanks to DareTheHair from talk.maemo.org for this snippet that
     #recursively builds the file list
     for root, dirs, files in os.walk(dir_name):
+        if any(f.startswith(".") for f in root.split(os.sep)):
+            continue # avoid hidden folders, esp svn ones
+
         real_dir = root[len(dir_name):]
-        if '.' in real_dir:
-            continue # if some part of the dirname contains '.' we
-                                        # ignore all files (avoid .svn
-                                        # and others)
         fake_file = []
         for f in files:
             fake_file.append(root + os.sep + f + "|" + f)
