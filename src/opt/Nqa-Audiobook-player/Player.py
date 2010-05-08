@@ -86,7 +86,7 @@ class Player(object):
             self.ui.set_book(bookPath, self.audiobook.get_cover_img())
             self.ui.set_chapters(self.audiobook.chapters)
 
-        chapter_title = self.audiobook.chapters[chapter_num]
+        chapter_title = self.audiobook.chapters[self.audiobook.current_chapter]
         self.set_chapter(chapter_title, True)
 
     def set_chapter(self, chapter, continuing = False):
