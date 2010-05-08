@@ -12,8 +12,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 """
 
-import py2deb
 import os
+import sys
+
+import py2deb
 
 
 def build_package(distribution):
@@ -28,6 +30,7 @@ def build_package(distribution):
     p.description="""Very simple Audiobook player.
 Supports playing, pausing, seeking (sort of) and saving state when changing book/closing.
 Plays books arranged as dirs under myDocs/Audiobooks
+.
 Homepage: http://nqaap.garage.maemo.org/"""
     p.author="Soeren 'Pengman' Pedersen"
     p.mail="pengmeister@gmail.com"
