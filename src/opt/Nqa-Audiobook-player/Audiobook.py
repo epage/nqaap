@@ -93,7 +93,7 @@ class Audiobook(object):
             if path.rsplit(".", 1)[-1] in ["png", "gif", "jpg", "jpeg"]
         ]
         if 0 < len(images):
-            self.cover = images[0]
+            self._coverPath = images[0]
 
         self._chapterPaths = [
             path
