@@ -69,17 +69,16 @@ rm -f ~/.nqaap/nqaap.log
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre install script
     #  p.preremove="""#!/bin/sh
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre remove script
-    version = "0.8.1"           #Version of your software, e.g. "1.2.0" or "0.8.2"
-    build = "1" #Build number, e.g. "1" for the first build of this
+    version = "0.8.2"           #Version of your software, e.g. "1.2.0" or "0.8.2"
+    build = "0" #Build number, e.g. "1" for the first build of this
                                 #version of your software. Increment
                                 #for later re-builds of the same
                                 #version of your software.  Text with
                                 #changelog information to be displayed
                                 #in the package "Details" tab of the
                                 #Maemo Application Manager
-    changeloginformation = """Bugfix for Post 104: Chapter out of range error
-Bugfix for Post 110: Exception on launch of nqa for Maemo 4.1
-Updated icons to have transparency
+    changeloginformation = """Playback during silent mode
+Fix for Post 118: Missing Cover art
 """
     dir_name = "src" #Name of the subfolder containing your package
                                 #source files

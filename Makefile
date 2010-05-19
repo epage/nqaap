@@ -1,7 +1,7 @@
 PROJECT_NAME=nqaap
 SOURCE_PATH=src
 SOURCE=$(shell find $(SOURCE_PATH) -iname "*.py")
-PROGRAM=$(SOURCE_PATH)/opt/Nqa-Audiobook-player/$(PROJECT_NAME).py
+PROGRAM=$(SOURCE_PATH)/opt/Nqa-Audiobook-player/$(PROJECT_NAME)_gtk.py
 OBJ=$(SOURCE:.py=.pyc)
 BUILD_PATH=./build
 TAG_FILE=~/.ctags/$(PROJECT_NAME).tags
@@ -22,7 +22,7 @@ CTAGS=ctags-exuberant
 all: test
 
 run: $(OBJ)
-	$(SOURCE_PATH)/$(PROJECT_NAME).py
+	$(PROGRAM)
 
 profile: $(OBJ)
 	$(PROFILE_GEN) $(PROGRAM)
