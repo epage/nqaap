@@ -53,11 +53,10 @@ class Gui(object):
         self._callMonitor.start()
 
     def setup(self):
-        if hildonize.IS_FREMANTLE_SUPPORTED:
-            gtk.set_application_name(constants.__pretty_app_name__) # window title
         self._app = hildonize.get_app_class()()
         self.win = gtk.Window()
         self.win = hildonize.hildonize_window(self._app, self.win)
+        self.win.set_title(constants.__pretty_app_name__)
 
         # Cover image
         self.cover = gtk.Image()
@@ -79,6 +78,7 @@ class Gui(object):
         else:
             adjustment = gtk.Adjustment(0, 0, 101, 1, 5, 1)
             self.seek = gtk.HScale(adjustment)
+            self.seek.set_draw_value(False)
             self.seek.connect('change-value', self.seek_changed) # event
 
         # Pause button

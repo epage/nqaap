@@ -47,18 +47,19 @@ except AttributeError:
 	get_app_class = _null_get_app_class
 
 
-def _hildon_set_application_title(window, title):
+def _hildon_set_application_name(name):
+	gtk.set_application_name(name)
+
+
+def _null_set_application_name(name):
 	pass
 
 
-def _null_set_application_title(window, title):
-	window.set_title(title)
-
-
-if IS_HILDON_SUPPORTED:
-	set_application_title = _hildon_set_application_title
-else:
-	set_application_title = _null_set_application_title
+try:
+	gtk.set_application_name
+	set_application_name = _hildon_set_application_name
+except AttributeError:
+	set_application_name = _null_set_application_name
 
 
 def _fremantle_hildonize_window(app, window):

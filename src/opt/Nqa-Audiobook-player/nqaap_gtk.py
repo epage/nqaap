@@ -7,6 +7,7 @@ import dbus.mainloop.glib
 import gobject
 import gtk
 
+import hildonize
 from Player import Player
 from Gui import Gui
 
@@ -19,6 +20,7 @@ def run():
     gobject.threads_init()
     gtk.gdk.threads_init()
 
+    hildonize.set_application_name("FMRadio")
     gui = Gui()
     controller = Player(ui = gui)
     gui.controller = controller
