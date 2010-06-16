@@ -54,13 +54,13 @@ class Player(object):
                 bookPath = self._bookPaths[lastBookName]
                 self.set_book(bookPath)
             except KeyError:
-				_moduleLogger.exception("Audiobook was not found")
+                _moduleLogger.exception("Audiobook was not found")
             except IndexError:
-				_moduleLogger.exception("Chapter was not found")
+                _moduleLogger.exception("Chapter was not found")
             except IOError:
-				_moduleLogger.exception("Audiobook could not be loaded")
+                _moduleLogger.exception("Audiobook could not be loaded")
             except Exception:
-				_moduleLogger.exception("Can you say 'confusion'?")
+                _moduleLogger.exception("Can you say 'confusion'?")
 
     @staticmethod
     def __format_name(path):
