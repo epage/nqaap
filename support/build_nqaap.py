@@ -42,12 +42,13 @@ Homepage: http://nqaap.garage.maemo.org/"""
         "python-dbus | python2.5-dbus",
         "python-telepathy | python2.5-telepathy",
         "python-gobject | python2.5-gobject",
+        "python-gst0.10 | python2.5-gst0.10",
     ])
     maemoSpecificDepends = ", python-osso | python2.5-osso, python-hildon | python2.5-hildon"
     p.depends += {
-        "debian": ", python-gst0.10",
+        "debian": "",
         "diablo": maemoSpecificDepends,
-        "fremantle": maemoSpecificDepends+", python-gst0.10",
+        "fremantle": maemoSpecificDepends,
     }[distribution]
     p.section = {
         "debian": "sound",
@@ -69,7 +70,7 @@ rm -f ~/.nqaap/nqaap.log
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre install script
     #  p.preremove="""#!/bin/sh
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre remove script
-    version = "0.8.2"           #Version of your software, e.g. "1.2.0" or "0.8.2"
+    version = "0.8.3"           #Version of your software, e.g. "1.2.0" or "0.8.2"
     build = "0" #Build number, e.g. "1" for the first build of this
                                 #version of your software. Increment
                                 #for later re-builds of the same
@@ -77,9 +78,9 @@ rm -f ~/.nqaap/nqaap.log
                                 #changelog information to be displayed
                                 #in the package "Details" tab of the
                                 #Maemo Application Manager
-    changeloginformation = """Playback during silent mode
-Fix for Post 118: Missing Cover art
-"""
+    changeloginformation = """
+Fixing a crash on launch (Post 140)
+""".strip()
     dir_name = "src" #Name of the subfolder containing your package
                                 #source files
                                 #(e.g. usr\share\icons\hicolor\scalable\myappicon.svg,
