@@ -7,6 +7,7 @@ import dbus.mainloop.glib
 import gobject
 import gtk
 
+import constants
 import hildonize
 from Player import Player
 from Gui import Gui
@@ -20,7 +21,10 @@ def run():
     gobject.threads_init()
     gtk.gdk.threads_init()
 
-    hildonize.set_application_name("FMRadio")
+    if hildonize.IS_FREMANTLE_SUPPORTED:
+        hildonize.set_application_name("FMRadio")
+    else:
+        hildonize.set_application_name(constants.__pretty_app_name__)
     gui = Gui()
     controller = Player(ui = gui)
     gui.controller = controller
