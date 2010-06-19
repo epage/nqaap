@@ -69,8 +69,8 @@ rm -f ~/.nqaap/nqaap.log
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre install script
     #  p.preremove="""#!/bin/sh
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre remove script
-    version = "0.8.3"           #Version of your software, e.g. "1.2.0" or "0.8.2"
-    build = "1" #Build number, e.g. "1" for the first build of this
+    version = "0.8.4"           #Version of your software, e.g. "1.2.0" or "0.8.2"
+    build = "0" #Build number, e.g. "1" for the first build of this
                                 #version of your software. Increment
                                 #for later re-builds of the same
                                 #version of your software.  Text with
@@ -78,7 +78,7 @@ rm -f ~/.nqaap/nqaap.log
                                 #in the package "Details" tab of the
                                 #Maemo Application Manager
     changeloginformation = """
-Fixing a crash on launch (Post 140)
+Limiting FMRadio hack to only Maemo 5
 """.strip()
     dir_name = "src" #Name of the subfolder containing your package
                                 #source files
