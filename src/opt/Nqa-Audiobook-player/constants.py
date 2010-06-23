@@ -1,6 +1,6 @@
 import os
 
-__pretty_app_name__ = "nQa Audiobook Player"
+__pretty_app_name__ = "nQaap"
 __app_name__ = "nqaap"
 __version__ = "0.7.2-1"
 __build__ = 0
