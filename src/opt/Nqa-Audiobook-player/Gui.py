@@ -64,8 +64,12 @@ class Gui(object):
         # Controls:
 
         # Label that hold the title of the book,and maybe the chapter
-        self.title = gtk.Label("Select a book to start listening")
+        self.title = gtk.Label()
         self.title.set_justify(gtk.JUSTIFY_CENTER)
+        self._set_display_title("Select a book to start listening")
+
+        self.chapter = gtk.Label()
+        self.chapter.set_justify(gtk.JUSTIFY_CENTER)
 
         # Seekbar 
         if hildonize.IS_FREMANTLE_SUPPORTED:
@@ -84,18 +88,18 @@ class Gui(object):
         # Pause button
         if hildonize.IS_FREMANTLE_SUPPORTED:
             self.backButton = hildon.Button(gtk.HILDON_SIZE_AUTO_WIDTH | gtk.HILDON_SIZE_FINGER_HEIGHT, hildon.BUTTON_ARRANGEMENT_VERTICAL)
-            image = gtk.image_new_from_stock(gtk.STOCK_GO_BACK, gtk.HILDON_SIZE_FINGER_HEIGHT)
+            image = gtk.image_new_from_stock(gtk.STOCK_MEDIA_PREVIOUS, gtk.HILDON_SIZE_FINGER_HEIGHT)
             self.backButton.set_image(image)
 
             self.button = hildon.Button(gtk.HILDON_SIZE_AUTO_WIDTH | gtk.HILDON_SIZE_FINGER_HEIGHT, hildon.BUTTON_ARRANGEMENT_VERTICAL)
 
             self.forwardButton = hildon.Button(gtk.HILDON_SIZE_AUTO_WIDTH | gtk.HILDON_SIZE_FINGER_HEIGHT, hildon.BUTTON_ARRANGEMENT_VERTICAL)
-            image = gtk.image_new_from_stock(gtk.STOCK_GO_FORWARD, gtk.HILDON_SIZE_FINGER_HEIGHT)
+            image = gtk.image_new_from_stock(gtk.STOCK_MEDIA_NEXT, gtk.HILDON_SIZE_FINGER_HEIGHT)
             self.forwardButton.set_image(image)
         else:
-            self.backButton = gtk.Button(stock=gtk.STOCK_GO_BACK)
+            self.backButton = gtk.Button(stock=gtk.STOCK_MEDIA_PREVIOUS)
             self.button = gtk.Button()
-            self.forwardButton = gtk.Button(stock=gtk.STOCK_GO_FORWARD)
+            self.forwardButton = gtk.Button(stock=gtk.STOCK_MEDIA_NEXT)
         self.set_button_text("Play", "Start playing the audiobook")
         self.backButton.connect('clicked', self._on_previous_chapter)
         self.button.connect('clicked', self.play_pressed) # event
@@ -108,8 +112,11 @@ class Gui(object):
 
         # Box to hold the controls:
         self._controlLayout = gtk.VBox()
-        self._controlLayout.pack_start(self.title, True, True, 0)
-        self._controlLayout.pack_start(self.seek, True, True, 0)
+        self._controlLayout.pack_start(gtk.Label(), True, True, 0)
+        self._controlLayout.pack_start(self.title, False, True, 0)
+        self._controlLayout.pack_start(self.chapter, False, True, 0)
+        self._controlLayout.pack_start(gtk.Label(), True, True, 0)
+        self._controlLayout.pack_start(self.seek, False, True, 0)
         self._controlLayout.pack_start(self._toolbar, False, True, 0)
 
         #Box that divides the layout in two: cover on the lefta
@@ -529,7 +536,7 @@ class Gui(object):
         if hildonize.IS_FREMANTLE_SUPPORTED:
             self.button.set_text(title, text)
         else:
-            self.button.set_label("%s - %s" % (title, text))
+            self.button.set_label("%s" % (title, ))
 
     def set_books(self, books):
         _moduleLogger.debug("new books")
@@ -542,7 +549,7 @@ class Gui(object):
         bookName = self.__format_name(bookPath)
 
         self.set_button_text("Play", "Start playing the audiobook") # reset button
-        self.title.set_text(bookName)
+        self._set_display_title(bookName)
         if hildonize.IS_FREMANTLE_SUPPORTED:
             self.book_button.set_text("Audiobook", bookName)
         else:
@@ -557,6 +564,7 @@ class Gui(object):
         chapter parameter is supposed to be the index for the chapter, not the name
         '''
         self.auto_chapter_selected = True
+        self._set_display_chapter(str(chapterIndex + 1))
         if hildonize.IS_FREMANTLE_SUPPORTED:
             self.chapter_button.set_text("Chapter", str(chapterIndex))
         else:
@@ -574,6 +582,12 @@ class Gui(object):
     def set_selected_value(self, button, value):
         i = button.get_selector().get_model(0).index[value] # get index of value from list
         button.set_active(i)                                # set active index to that index
+
+    def _set_display_title(self, title):
+        self.title.set_markup("<b><big>%s</big></b>" % title)
+
+    def _set_display_chapter(self, chapter):
+        self.chapter.set_markup("<b><big>Chapter %s</big></b>" % chapter)
 
 
 def _old_timeout_add_seconds(timeout, callback):
