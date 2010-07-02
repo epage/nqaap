@@ -176,6 +176,10 @@ class Gui(object):
             settings_button.set_label("Settings")
             settings_button.connect("clicked", self._on_settings)
 
+            about_button = hildon.Button(gtk.HILDON_SIZE_AUTO, hildon.BUTTON_ARRANGEMENT_VERTICAL)
+            about_button.set_label("About")
+            about_button.connect("clicked", self._on_about_activate)
+
             help_button = hildon.Button(gtk.HILDON_SIZE_AUTO, hildon.BUTTON_ARRANGEMENT_VERTICAL)
             help_button.set_label("Help")
             help_button.connect("clicked", self.get_help)
@@ -185,6 +189,7 @@ class Gui(object):
             self._menuBar.append(self.sleeptime_button)        # Add the button to menu
             self._menuBar.append(settings_button)
             self._menuBar.append(help_button)
+            self._menuBar.append(about_button)
             self._menuBar.show_all()
         else:
             self._audiobookMenuItem = gtk.MenuItem("Audiobook: ")
@@ -199,6 +204,9 @@ class Gui(object):
             settingsMenuItem = gtk.MenuItem("Settings")
             settingsMenuItem.connect("activate", self._on_settings)
 
+            aboutMenuItem = gtk.MenuItem("About")
+            aboutMenuItem.connect("activate", self._on_about_activate)
+
             helpMenuItem = gtk.MenuItem("Help")
             helpMenuItem.connect("activate", self.get_help)
 
@@ -208,6 +216,7 @@ class Gui(object):
             booksMenu.append(self._sleepMenuItem)
             booksMenu.append(settingsMenuItem)
             booksMenu.append(helpMenuItem)
+            booksMenu.append(aboutMenuItem)
 
             booksMenuItem = gtk.MenuItem("Books")
             booksMenuItem.show()
@@ -470,6 +479,18 @@ class Gui(object):
             self.controller.stop()          # to save the state
         finally:
             gtk.main_quit()
+
+    @gtk_toolbox.log_exception(_moduleLogger)
+    def _on_about_activate(self, *args):
+        dlg = gtk.AboutDialog()
+        dlg.set_name(constants.__pretty_app_name__)
+        dlg.set_version("%s-%d" % (constants.__version__, constants.__build__))
+        dlg.set_copyright("Copyright 2010")
+        dlg.set_comments("")
+        dlg.set_website("http://nqaap.garage.maemo.org/")
+        dlg.set_authors(["Pengman <pengmeister@gmail.com>", "Ed Page <eopage@byu.net>"])
+        dlg.run()
+        dlg.destroy()
 
     # Actions:  
 
