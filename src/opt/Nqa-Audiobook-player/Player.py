@@ -30,12 +30,16 @@ class Player(object):
     def get_books_path(self):
         return self._bookDir
 
-    def load_books_path(self, booksPath):
-        _moduleLogger.info("Loading books %s" % booksPath)
+    def reload(self, booksPath):
         if self.audiobook is not None:
             position = self.player.elapsed()
             self.storage.set_time(self.audiobook.current_chapter, position)
+        self.save()
+        self.load(booksPath)
 
+    def load(self, booksPath):
+        _moduleLogger.info("Loading books from %s" % booksPath)
+        self.storage.load()
         self._bookDir = booksPath
 
         self._bookPaths = dict(
@@ -61,6 +65,11 @@ class Player(object):
                 _moduleLogger.exception("Audiobook could not be loaded")
             except Exception:
                 _moduleLogger.exception("Can you say 'confusion'?")
+
+    def save(self):
+        position = self.player.elapsed()
+        self.storage.set_time(self.audiobook.current_chapter, position)
+        self.storage.save()
 
     @staticmethod
     def __format_name(path):

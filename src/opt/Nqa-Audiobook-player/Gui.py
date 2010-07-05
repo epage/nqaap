@@ -42,11 +42,7 @@ class Gui(object):
 
         self.controller = None
         self.sleep_timer = None
-        self.auto_chapter_selected = False # true if we are in the
-                                           # midle of an automatic
-                                           # chapter change
 
-        self.ignore_next_chapter_change = False
         # set up gui
         self.setup()
         self._callMonitor.connect("call_start", self.__on_call_started)
@@ -232,6 +228,7 @@ class Gui(object):
         self._save_settings(config)
         with open(constants._user_settings_, "wb") as configFile:
             config.write(configFile)
+        self.controller.save()
 
     def _save_settings(self, config):
         config.add_section(constants.__pretty_app_name__)
@@ -273,7 +270,7 @@ class Gui(object):
         else:
             self.win.unfullscreen()
 
-        self.controller.load_books_path(booksPath)
+        self.controller.load(booksPath)
 
     @staticmethod
     def __format_name(path):
@@ -295,6 +292,7 @@ class Gui(object):
         self._bookSelectionIndex = index
         bookName = self._bookSelection[index]
         self.controller.set_book(bookName)
+        self.set_button_text("Play", "Start playing the audiobook") # reset button
 
     @gtk_toolbox.log_exception(_moduleLogger)
     def _on_select_chapter(self, *args):
@@ -309,6 +307,7 @@ class Gui(object):
         self._chapterSelectionIndex = index
         chapterName = self._chapterSelection[index]
         self.controller.set_chapter(chapterName)
+        self.set_button_text("Play", "Start playing the audiobook") # reset button
 
     @gtk_toolbox.log_exception(_moduleLogger)
     def _on_select_sleep(self, *args):
@@ -377,7 +376,7 @@ class Gui(object):
                 orientation = gtk.ORIENTATION_HORIZONTAL
             self.set_orientation(orientation)
         if self.__settingsManager.get_audiobook_path() != self.controller.get_books_path():
-            self.controller.load_books_path(self.__settingsManager.get_audiobook_path())
+            self.controller.reload(self.__settingsManager.get_audiobook_path())
 
         return True
 
@@ -534,24 +533,9 @@ class Gui(object):
     def change_chapter(self, chapterName):
         if chapterName is None:
             _moduleLogger.debug("chapter selection canceled.")
-            #import pdb; pdb.set_trace()     # start debugger
-            self.ignore_next_chapter_change = True
             return True                   # this should end the function and indicate it has been handled
 
-        if self.ignore_next_chapter_change:
-            self.ignore_next_chapter_change = False
-            _moduleLogger.debug("followup chapter selection canceled.")
-            #import pdb; pdb.set_trace()     # start debugger
-            return True                   # this should end the function and indicate it has been handled
-
-        if self.auto_chapter_selected:
-            _moduleLogger.debug("chapter changed (by controller) to: %s" % chapterName)
-            self.auto_chapter_selected = False
-            # do nothing
-        else:
-            _moduleLogger.debug("chapter selection sendt to controller: %s" % chapterName)
-            self.controller.set_chapter(chapterName) # signal controller
-            self.set_button_text("Play", "Start playing the audiobook") # reset button
+        _moduleLogger.debug("chapter changed (by controller) to: %s" % chapterName)
 
     def set_button_text(self, title, text):
         if hildonize.IS_FREMANTLE_SUPPORTED:
@@ -589,7 +573,7 @@ class Gui(object):
         if hildonize.IS_FREMANTLE_SUPPORTED:
             self.chapter_button.set_text("Chapter", str(chapterIndex))
         else:
-            self._chapterMenuItem.get_child().set_text("Chapter: %s" % (chapterIndex, ))
+            self._chapterMenuItem.get_child().set_text("Chapter: %s" % (chapterIndex+1, ))
 
     def set_chapters(self, chapters):
         _moduleLogger.debug("setting chapters" )
