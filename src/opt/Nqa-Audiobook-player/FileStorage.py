@@ -8,6 +8,9 @@ import logging
 _moduleLogger = logging.getLogger(__name__)
 
 
+# @todo Add bookmarks
+
+
 class FileStorage(object):
 
     def __init__(self, path="~/.SornPlayer/"):

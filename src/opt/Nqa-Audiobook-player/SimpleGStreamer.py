@@ -11,6 +11,9 @@ _moduleLogger = logging.getLogger(__name__)
 
 class SimplePlayer(object):
 
+    # @todo Add pitch/speed control
+    # http://github.com/jwagner/playitslowly/blob/master/playitslowly/pipeline.py
+
     def __init__(self, on_playing_done = None):
         #Fields
         self.playing = False

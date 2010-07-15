@@ -24,6 +24,14 @@ _moduleLogger = logging.getLogger(__name__)
 
 class Gui(object):
 
+    # @todo Jump straight to book selection on first launch?
+    # @todo Absolute increments (+/-5 seconds)
+    # @todo Show elapsed time / time lef
+    # @todo Volume control when screen is off
+    # @todo Variable speed
+    #  http://scaletempo.sourceforge.net/0/task-list.html
+    #  http://www.gstreamer.net/data/doc/gstreamer/head/gst-plugins-bad-plugins/html/gst-plugins-bad-plugins-scaletempo.html
+
     def __init__(self):
         _moduleLogger.info("Starting GUI")
         self._clipboard = gtk.clipboard_get()
