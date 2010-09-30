@@ -33,15 +33,17 @@ def build_package(distribution):
 Supports playing, pausing, seeking (sort of) and saving state when changing book/closing.
 Plays books arranged as dirs under myDocs/Audiobooks
 .
-Homepage: http://nqaap.garage.maemo.org/"""
+Homepage: http://wiki.maemo.org/Nqaap"""
     p.author="Soeren 'Pengman' Pedersen"
     p.mail="pengmeister@gmail.com"
+    p.license = "lgpl"
     p.depends = ", ".join([
         "python2.6 | python2.5",
         "python-gtk2 | python2.5-gtk2",
         "python-dbus | python2.5-dbus",
         "python-telepathy | python2.5-telepathy",
         "python-gobject | python2.5-gobject",
+        "python-simplejson",
     ])
     maemoSpecificDepends = ", python-osso | python2.5-osso, python-hildon | python2.5-hildon"
     p.depends += {
@@ -59,7 +61,7 @@ Homepage: http://nqaap.garage.maemo.org/"""
     p.urgency="low"             #not used in maemo onl for deb os
     p.distribution=distribution
     p.repository="extras"
-    p.bugTracker="http://talk.maemo.org/showthread.php?p=619738"
+    p.bugTracker="https://bugs.maemo.org/enter_bug.cgi?product=nQa%20Audiobook%20Player"
     p.postinstall="""#!/bin/sh
 rm -f ~/.nqaap/nqaap.log
 """
@@ -69,7 +71,7 @@ rm -f ~/.nqaap/nqaap.log
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre install script
     #  p.preremove="""#!/bin/sh
     #  chmod +x /usr/bin/mclock.py""" #Set here your pre remove script
-    version = "0.8.5"           #Version of your software, e.g. "1.2.0" or "0.8.2"
+    version = "0.8.6"           #Version of your software, e.g. "1.2.0" or "0.8.2"
     build = "0" #Build number, e.g. "1" for the first build of this
                                 #version of your software. Increment
                                 #for later re-builds of the same
@@ -78,7 +80,8 @@ rm -f ~/.nqaap/nqaap.log
                                 #in the package "Details" tab of the
                                 #Maemo Application Manager
     changeloginformation = """
-* Tweaking the UI based on feedback from Addison
+* About window as requested by magnuslu
+* Switched how storage of active book, chapter, and chapter position is stored
 """.strip()
     dir_name = "src" #Name of the subfolder containing your package
                                 #source files
