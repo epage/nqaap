@@ -61,7 +61,7 @@ Homepage: http://wiki.maemo.org/Nqaap"""
     p.urgency="low"             #not used in maemo onl for deb os
     p.distribution=distribution
     p.repository="extras"
-    p.bugTracker="https://bugs.maemo.org/enter_bug.cgi?product=nQa%20Audiobook%20Player"
+    p.bugTracker="https://bugs.maemo.org/enter_bug.cgi?product=nQa%%20Audiobook%%20Player"
     p.postinstall="""#!/bin/sh
 rm -f ~/.nqaap/nqaap.log
 """

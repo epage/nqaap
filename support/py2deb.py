@@ -786,7 +786,13 @@ FILES :
 
             generalParagraph = "\n".join(generalParagraphFields)
             specificParagraph = "\n".join(specificParagraphFields)
-            controlContent = "\n\n".join((generalParagraph, specificParagraph)) % packageContents
+            controlTemplate = "\n\n".join((generalParagraph, specificParagraph))
+            print "_"*90
+            print packageContents.keys()
+            print "_"*90
+            print repr(controlTemplate)
+            print "_"*90
+            controlContent = controlTemplate % packageContents
             open(os.path.join(DEBIAN, "control"), "w").write(controlContent)
 
             #==========================================================================
