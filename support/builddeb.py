@@ -24,7 +24,7 @@ def build_package(distribution):
         os.chdir(os.path.dirname(sys.argv[0]))
     except:
         pass
-    print
+
     p=py2deb.Py2deb("nqaap") #This is the package name and MUST be in
                                #lowercase! (using e.g. "mClock" fails
                                #miserably...)

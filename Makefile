@@ -39,18 +39,18 @@ package: $(OBJ)
 
 	mkdir -p $(BUILD_PATH)/generic
 	cp -R $(SOURCE_PATH) $(BUILD_PATH)/generic
-	cp support/build_nqaap.py $(BUILD_PATH)/generic
+	cp support/builddeb.py $(BUILD_PATH)/generic
 	cp support/py2deb.py $(BUILD_PATH)/generic
 
 	mkdir -p $(BUILD_PATH)/diablo
 	cp -R $(BUILD_PATH)/generic/* $(BUILD_PATH)/diablo
-	cd $(BUILD_PATH)/diablo ; python build_nqaap.py diablo
+	cd $(BUILD_PATH)/diablo ; python builddeb.py diablo
 	mkdir -p $(BUILD_PATH)/fremantle
 	cp -R $(BUILD_PATH)/generic/* $(BUILD_PATH)/fremantle
-	cd $(BUILD_PATH)/fremantle ; python build_nqaap.py fremantle
+	cd $(BUILD_PATH)/fremantle ; python builddeb.py fremantle
 	mkdir -p $(BUILD_PATH)/debian
 	cp -R $(BUILD_PATH)/generic/* $(BUILD_PATH)/debian
-	cd $(BUILD_PATH)/debian ; python build_nqaap.py debian
+	cd $(BUILD_PATH)/debian ; python builddeb.py debian
 
 upload:
 	dput fremantle-extras-builder $(BUILD_PATH)/fremantle/$(PROJECT_NAME)*.changes
