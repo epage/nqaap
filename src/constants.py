@@ -2,7 +2,7 @@ import os
 
 __pretty_app_name__ = "nQaap"
 __app_name__ = "nqaap"
-__version__ = "0.8.6"
+__version__ = "0.8.8"
 __build__ = 0
 __app_magic__ = 0xdeadbeef
 _data_path_ = os.path.join(os.path.expanduser("~"), ".%s" % __app_name__)

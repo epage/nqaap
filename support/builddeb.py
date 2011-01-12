@@ -22,6 +22,8 @@ __email__ = "pengmeister@gmail.com"
 __version__ = constants.__version__
 __build__ = constants.__build__
 __changelog__ = """
+* Cleaning up some of the code
+* Making loading old settings more resiliant
 """.strip()
 
 
