@@ -38,7 +38,13 @@ package: $(OBJ)
 	rm -Rf $(BUILD_PATH)
 
 	mkdir -p $(BUILD_PATH)/generic
-	cp -R $(SOURCE_PATH) $(BUILD_PATH)/generic
+	cp $(SOURCE_PATH)/constants.py  $(BUILD_PATH)/generic
+	cp $(SOURCE_PATH)/$(PROJECT_NAME).py  $(BUILD_PATH)/generic
+	$(foreach file, $(SOURCE), cp $(file) $(BUILD_PATH)/generic/$(subst /,-,$(file)) ; )
+	cp support/$(PROJECT_NAME).desktop $(BUILD_PATH)/generic
+	cp support/icons/hicolor/26x26/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/26x26-$(PROJECT_NAME).png
+	cp support/icons/hicolor/64x64/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/64x64-$(PROJECT_NAME).png
+	cp support/icons/hicolor/scalable/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/scale-$(PROJECT_NAME).png
 	cp support/builddeb.py $(BUILD_PATH)/generic
 	cp support/py2deb.py $(BUILD_PATH)/generic
 

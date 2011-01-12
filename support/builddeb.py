@@ -1,39 +1,70 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-"""
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published
-by the Free Software Foundation; version 2 only.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-"""
 
 import os
 import sys
 
-import py2deb
+try:
+	import py2deb
+except ImportError:
+	import fake_py2deb as py2deb
+
+import constants
+
+
+__app_name__ = constants.__app_name__
+__description__ = """Very simple Audiobook player.
+Supports playing, pausing, seeking (sort of) and saving state when changing book/closing.
+Plays books arranged as dirs under myDocs/Audiobooks
+.
+Homepage: http://wiki.maemo.org/Nqaap"""
+__author__ = "Soeren 'Pengman' Pedersen"
+__email__ = "pengmeister@gmail.com"
+__version__ = constants.__version__
+__build__ = constants.__build__
+__changelog__ = """
+""".strip()
+
+
+__postinstall__ = """#!/bin/sh -e
+
+gtk-update-icon-cache -f /usr/share/icons/hicolor
+rm -f ~/.%(name)s/%(name)s.log
+""" % {"name": constants.__app_name__}
+
+
+def find_files(prefix, path):
+	for root, dirs, files in os.walk(path):
+		for file in files:
+			if file.startswith(prefix+"-"):
+				fileParts = file.split("-")
+				unused, relPathParts, newName = fileParts[0], fileParts[1:-1], fileParts[-1]
+				assert unused == prefix
+				relPath = os.sep.join(relPathParts)
+				yield relPath, file, newName
+
+
+def unflatten_files(files):
+	d = {}
+	for relPath, oldName, newName in files:
+		if relPath not in d:
+			d[relPath] = []
+		d[relPath].append((oldName, newName))
+	return d
 
 
 def build_package(distribution):
-	py2deb.Py2deb.SECTIONS = py2deb.SECTIONS_BY_POLICY[distribution]
 	try:
 		os.chdir(os.path.dirname(sys.argv[0]))
 	except:
 		pass
 
-	p=py2deb.Py2deb("nqaap")
-	p.prettyName="NQA Audiobook Player"
-	p.description="""Very simple Audiobook player.
-Supports playing, pausing, seeking (sort of) and saving state when changing book/closing.
-Plays books arranged as dirs under myDocs/Audiobooks
-.
-Homepage: http://wiki.maemo.org/Nqaap"""
-	p.author="Soeren 'Pengman' Pedersen"
-	p.mail="pengmeister@gmail.com"
+	py2deb.Py2deb.SECTIONS = py2deb.SECTIONS_BY_POLICY[distribution]
+	p = py2deb.Py2deb(__app_name__)
+	p.prettyName = constants.__pretty_app_name__
+	p.description = __description__
+	p.bugTracker="https://bugs.maemo.org/enter_bug.cgi?product=nQa%%20Audiobook%%20Player"
+	p.author = __author__
+	p.mail = __email__
 	p.license = "lgpl"
 	p.depends = ", ".join([
 		"python2.6 | python2.5",
@@ -54,43 +85,37 @@ Homepage: http://wiki.maemo.org/Nqaap"""
 		"diablo": "user/multimedia",
 		"fremantle": "user/multimedia",
 	}[distribution]
+	p.arch="all"
+	p.urgency="low"
+	p.distribution=distribution
+	p.repository="extras"
+	p.changelog = __changelog__
+	p.postinstall = __postinstall__
 	p.icon = {
 		"debian": "src/usr/share/icons/hicolor/26x26/hildon/nqaap.png",
 		"diablo": "src/usr/share/icons/hicolor/26x26/hildon/nqaap.png",
 		"fremantle": "src/usr/share/icons/hicolor/48x48/hildon/nqaap.png",
 	}[distribution]
-	p.arch="all"
-	p.urgency="low"
-	p.distribution=distribution
-	p.repository="extras"
-	p.bugTracker="https://bugs.maemo.org/enter_bug.cgi?product=nQa%%20Audiobook%%20Player"
-	p.postinstall="""#!/bin/sh
-rm -f ~/.nqaap/nqaap.log
-"""
-	version = "0.8.7"
-	build = "0"
-	changeloginformation = """
-* Fixing a bug with initially configuring the book location
-""".strip()
-	dir_name = "src"
-	#Thanks to DareTheHair from talk.maemo.org for this snippet that
-	#recursively builds the file list
-	for root, dirs, files in os.walk(dir_name):
-		if any(f.startswith(".") for f in root.split(os.sep)):
-			continue # avoid hidden folders, esp svn ones
-
-		real_dir = root[len(dir_name):]
-		fake_file = []
-		for f in files:
-			fake_file.append(root + os.sep + f + "|" + f)
-		if len(fake_file) > 0:
-			p[real_dir] = fake_file
+	p["/opt/%s/bin" % constants.__app_name__] = [ "%s.py" % constants.__app_name__ ]
+	for relPath, files in unflatten_files(find_files("src", ".")).iteritems():
+		fullPath = "/opt/%s/lib" % constants.__app_name__
+		if relPath:
+			fullPath += os.sep+relPath
+		p[fullPath] = list(
+			"|".join((oldName, newName))
+			for (oldName, newName) in files
+		)
+	p["/usr/share/applications/hildon"] = ["%s.desktop" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/26x26/hildon"] = ["%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/48x48/hildon"] = ["%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/64x64/hildon"] = ["%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/scalable/hildon"] = ["%s.png" % constants.__app_name__]
 
 	print p
 	if distribution == "debian":
 		print p.generate(
-			version="%s-%s" % (version, build),
-			changelog=changeloginformation,
+			version="%s-%s" % (__version__, __build__),
+			changelog=__changelog__,
 			build=True,
 			tar=False,
 			changes=False,
@@ -98,8 +123,8 @@ rm -f ~/.nqaap/nqaap.log
 		)
 	else:
 		print p.generate(
-			version="%s-%s" % (version, build),
-			changelog=changeloginformation,
+			version="%s-%s" % (__version__, __build__),
+			changelog=__changelog__,
 			build=False,
 			tar=True,
 			changes=True,
