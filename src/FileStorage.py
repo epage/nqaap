@@ -88,8 +88,13 @@ class FileStorage(object):
 			for book in os.listdir(books_path):
 				book_file = os.path.join(books_path, book)
 				with open(book_file, 'r') as f:
-					chapter = int(f.readline())
-					position = int(f.readline())
+					try:
+						chapter = int(f.readline())
+						position = int(f.readline())
+					except ValueError:
+						_moduleLogger.exception("Trouble loading old settings from %s" % book_file)
+						chapter = 0
+						position = 0
 				self._books[book] = {
 					"chapter": chapter,
 					"position": position,
