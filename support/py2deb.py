@@ -473,6 +473,9 @@ class Py2deb(object):
 
         self.__files[path]=nfiles
 
+    def __getitem__(self, k):
+        return self.__files[k]
+
     def __delitem__(self, k):
         del self.__files[k]
 
@@ -786,13 +789,7 @@ FILES :
 
             generalParagraph = "\n".join(generalParagraphFields)
             specificParagraph = "\n".join(specificParagraphFields)
-            controlTemplate = "\n\n".join((generalParagraph, specificParagraph))
-            print "_"*90
-            print packageContents.keys()
-            print "_"*90
-            print repr(controlTemplate)
-            print "_"*90
-            controlContent = controlTemplate % packageContents
+            controlContent = "\n\n".join((generalParagraph, specificParagraph)) % packageContents
             open(os.path.join(DEBIAN, "control"), "w").write(controlContent)
 
             #==========================================================================

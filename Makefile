@@ -10,6 +10,7 @@ TODO_FILE=./TODO
 DEBUGGER=winpdb
 UNIT_TEST=nosetests --with-doctest -w .
 SYNTAX_TEST=support/test_syntax.py
+STYLE_TEST=../../Python/tools/pep8.py --ignore=W191,E501
 LINT_RC=./support/pylint.rc
 LINT=pylint --rcfile=$(LINT_RC)
 PROFILE_GEN=python -m cProfile -o .profile
@@ -43,6 +44,7 @@ package: $(OBJ)
 	$(foreach file, $(SOURCE), cp $(file) $(BUILD_PATH)/generic/$(subst /,-,$(file)) ; )
 	cp support/$(PROJECT_NAME).desktop $(BUILD_PATH)/generic
 	cp support/icons/hicolor/26x26/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/26x26-$(PROJECT_NAME).png
+	cp support/icons/hicolor/48x48/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/48x48-$(PROJECT_NAME).png
 	cp support/icons/hicolor/64x64/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/64x64-$(PROJECT_NAME).png
 	cp support/icons/hicolor/scalable/hildon/$(PROJECT_NAME).png $(BUILD_PATH)/generic/scale-$(PROJECT_NAME).png
 	cp support/builddeb.py $(BUILD_PATH)/generic

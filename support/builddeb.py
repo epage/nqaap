@@ -92,9 +92,9 @@ def build_package(distribution):
 	p.changelog = __changelog__
 	p.postinstall = __postinstall__
 	p.icon = {
-		"debian": "src/usr/share/icons/hicolor/26x26/hildon/nqaap.png",
-		"diablo": "src/usr/share/icons/hicolor/26x26/hildon/nqaap.png",
-		"fremantle": "src/usr/share/icons/hicolor/48x48/hildon/nqaap.png",
+		"debian": "26x26-%s.png" % constants.__app_name__,
+		"diablo": "26x26-%s.png" % constants.__app_name__,
+		"fremantle": "48x48-%s.png" % constants.__app_name__,
 	}[distribution]
 	p["/opt/%s/bin" % constants.__app_name__] = [ "%s.py" % constants.__app_name__ ]
 	for relPath, files in unflatten_files(find_files("src", ".")).iteritems():
@@ -106,10 +106,10 @@ def build_package(distribution):
 			for (oldName, newName) in files
 		)
 	p["/usr/share/applications/hildon"] = ["%s.desktop" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/26x26/hildon"] = ["%s.png" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/48x48/hildon"] = ["%s.png" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/64x64/hildon"] = ["%s.png" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/scalable/hildon"] = ["%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/26x26/hildon"] = ["26x26-%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/48x48/hildon"] = ["48x48-%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/64x64/hildon"] = ["64x64-%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/scalable/hildon"] = ["scale-%s.png" % constants.__app_name__]
 
 	print p
 	if distribution == "debian":
