@@ -22,8 +22,7 @@ __email__ = "pengmeister@gmail.com"
 __version__ = constants.__version__
 __build__ = constants.__build__
 __changelog__ = """
-* Cleaning up some of the code
-* Making loading old settings more resiliant
+* Fixing some packaging bugs I made that broke everything
 """.strip()
 
 
@@ -108,10 +107,10 @@ def build_package(distribution):
 			for (oldName, newName) in files
 		)
 	p["/usr/share/applications/hildon"] = ["%s.desktop" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/26x26/hildon"] = ["26x26-%s.png" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/48x48/hildon"] = ["48x48-%s.png" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/64x64/hildon"] = ["64x64-%s.png" % constants.__app_name__]
-	p["/usr/share/icons/hicolor/scalable/hildon"] = ["scale-%s.png" % constants.__app_name__]
+	p["/usr/share/icons/hicolor/26x26/hildon"] = ["26x26-%s.png|%s.png" % (constants.__app_name__, constants.__app_name__)]
+	p["/usr/share/icons/hicolor/48x48/hildon"] = ["48x48-%s.png|%s.png" % (constants.__app_name__, constants.__app_name__)]
+	p["/usr/share/icons/hicolor/64x64/hildon"] = ["64x64-%s.png|%s.png" % (constants.__app_name__, constants.__app_name__)]
+	p["/usr/share/icons/hicolor/scalable/hildon"] = ["scale-%s.png|%s.png" % (constants.__app_name__, constants.__app_name__)]
 
 	print p
 	if distribution == "debian":

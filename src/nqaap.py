@@ -6,7 +6,7 @@ import logging
 
 
 _moduleLogger = logging.getLogger(__name__)
-sys.path.append("/opt/dialcentral/lib")
+sys.path.append("/opt/nqaap/lib")
 
 
 import constants
