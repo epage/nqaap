@@ -22,7 +22,7 @@ __email__ = "pengmeister@gmail.com"
 __version__ = constants.__version__
 __build__ = constants.__build__
 __changelog__ = """
-* Default cover art was missing, re-introducing it
+* Storing resuming information in utf-8 for non-English file names
 """.strip()
 
 
