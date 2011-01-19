@@ -2,6 +2,7 @@ from __future__ import with_statement   # enable with
 
 import os
 import simplejson
+import codecs
 import logging
 
 
@@ -26,7 +27,7 @@ class FileStorage(object):
 			os.makedirs(self.path)
 
 		try:
-			with open(self.books_path, "r") as settingsFile:
+			with codecs.open(self.books_path, "r", "utf-8") as settingsFile:
 				settings = simplejson.load(settingsFile)
 		except IOError, e:
 			_moduleLogger.info("No settings")
@@ -47,7 +48,7 @@ class FileStorage(object):
 			"selected": self.selected,
 			"books": self._books,
 		}
-		with open(self.books_path, "w") as settingsFile:
+		with codecs.open(self.books_path, "w", "utf-8") as settingsFile:
 			simplejson.dump(settings, settingsFile)
 
 	def get_selected(self):
