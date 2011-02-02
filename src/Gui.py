@@ -2,6 +2,7 @@ from __future__ import with_statement
 
 import os
 import ConfigParser
+import codecs
 import logging
 
 import gobject
@@ -390,7 +391,6 @@ class Gui(object):
 
 	@gtk_toolbox.log_exception(_moduleLogger)
 	def update_seek(self):
-		#print self.controller.get_percentage()
 		if self.controller.is_playing():
 			gtk.gdk.threads_enter()
 			self.seek.set_value(self.controller.get_percentage() * 100)
@@ -412,7 +412,6 @@ class Gui(object):
 
 	@gtk_toolbox.log_exception(_moduleLogger)
 	def seek_changed(self, seek, scroll , value):
-		# print "sok", scroll
 		self.controller.seek_percent(seek.get_value() / 100.0)
 
 	@gtk_toolbox.log_exception(_moduleLogger)
@@ -453,10 +452,10 @@ class Gui(object):
 		):
 			self.quit()
 		elif event.keyval == gtk.keysyms.l and event.get_state() & gtk.gdk.CONTROL_MASK:
-			with open(constants._user_logpath_, "r") as f:
+			with codecs.open(constants._user_logpath_, "r", "utf-8") as f:
 				logLines = f.xreadlines()
-				log = "".join(logLines)
-				self._clipboard.set_text(str(log))
+				log = u"".join(logLines)
+				self._clipboard.set_text(log)
 			return True
 		elif event.keyval in RETURN_TYPES:
 			if self.controller.is_playing():

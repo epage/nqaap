@@ -58,7 +58,6 @@ class FileStorage(object):
 	def select_book(self, bookName):
 		""" Sets the book as the currently playing, and adds it to the
 		database if it is not already there"""
-		book_file = os.path.join(self.books_path, bookName)
 		if bookName not in self._books:
 			self._books[bookName] = {
 				"chapter": 0,

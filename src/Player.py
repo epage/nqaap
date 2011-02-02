@@ -74,10 +74,11 @@ class Player(object):
 
 	@staticmethod
 	def __format_name(path):
+		name = os.path.basename(path).decode("utf-8")
 		if os.path.isfile(path):
-			return os.path.basename(path).rsplit(".", 1)[0]
-		else:
-			return os.path.basename(path)
+			# remove the extension
+			name.rsplit(".", 1)[0]
+		return name
 
 	def set_book(self, bookPath):
 		oldBookName = self.storage.get_selected()
@@ -140,9 +141,8 @@ class Player(object):
 			if 0 < target_time:
 				time.sleep(1)
 				self.player.seek_time(target_time)
-			#print self.player.elapsed()
 		else:
-			print "No book selected, find one in ", self._bookDir
+			_moduleLogger.info("No book selected, find one in ", self._bookDir)
 
 	def stop(self):
 		position = self.player.elapsed()
@@ -155,16 +155,12 @@ class Player(object):
 		return self.player.playing
 
 	def sleeptimer(self, secs):
-		#print "sleeper", secs
 		time.sleep(secs)
-		#print "now its time to sleep"
 		self.stop()
 
 	def start_sleeptimer(self, secs):
-		#print "startin sleep"
 		sleep_thread = threading.Thread(target=self.sleeptimer, args=(secs, ))
 		sleep_thread.start()
-		#print "started sleep"
 
 	def get_percentage(self):
 		try:
